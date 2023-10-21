@@ -4,10 +4,12 @@ import Home from "./pages/Home/Home";
 import UserRegistration from "./pages/User-Registration/UserRegistration";
 import AllMusic from "./pages/All-Music/AllMusic";
 import AddMusic from "./pages/Add-Music/AddMusic";
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/all" element={<AllMusic />} />
