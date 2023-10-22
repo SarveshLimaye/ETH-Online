@@ -20,6 +20,7 @@ import Avatar from "avataaars";
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { useAccountAbstraction } from "../../store/accountAbstractionContext";
 import { generateRandomAvatarOptions } from "../../utils/avatar";
+import { utils } from "ethers";
 
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -29,11 +30,12 @@ export default function Navbar() {
     loginWeb3Auth,
     logoutWeb3Auth,
     ownerAddress,
-    safes,
+    safeSelected,
+    safeBalance,
     isAuthenticated,
   } = useAccountAbstraction();
 
-  console.log(safes);
+  const finalbal = utils.formatEther(safeBalance || "0");
 
   return (
     <>
@@ -110,6 +112,10 @@ export default function Navbar() {
                         "..." +
                         ownerAddress.slice(-4)}
                     </MenuItem>
+                    <MenuDivider />
+                    <MenuItem>Safe Wallet :{safeSelected}</MenuItem>
+                    <MenuDivider />
+                    <MenuItem>Safe Balance :{finalbal.slice(0, 8)}</MenuItem>
                     <MenuDivider />
                     <MenuItem as={Link} to="/profile">
                       Profile
