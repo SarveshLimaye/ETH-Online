@@ -12,7 +12,6 @@ import {
   useDisclosure,
   useColorModeValue,
   useColorMode,
-  Link,
   Stack,
 } from "@chakra-ui/react";
 import { CgProfile } from "react-icons/cg";
@@ -21,6 +20,7 @@ import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { useAccountAbstraction } from "../../store/accountAbstractionContext";
 import { generateRandomAvatarOptions } from "../../utils/avatar";
 import { utils } from "ethers";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -61,7 +61,7 @@ export default function Navbar() {
             ml="2"
             color="brand.00"
           >
-            <Link href="/">ETHOnline</Link>
+            <Link to="/">ETHOnline</Link>
           </HStack>
           <Flex alignItems={"center"}>
             <HStack
@@ -70,18 +70,18 @@ export default function Navbar() {
               display={{ base: "none", md: "flex" }}
               marginRight={4}
             >
-              <Link href={"/all"}>
+              <Link to="/all">
                 <Button w="full" variant="ghost">
                   Music
                 </Button>
               </Link>
-              <Link href={"/user-registration"}>
+              <Link to="/user-registration">
                 <Button w="full" variant="ghost">
                   User-Registration
                 </Button>
               </Link>
 
-              <Link href={"/add"}>
+              <Link to="/add">
                 <Button w="full" variant="ghost">
                   Add Music
                 </Button>
@@ -139,12 +139,12 @@ export default function Navbar() {
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-              <Link href={"/buy"}>
+              <Link to="/buy">
                 <Button w="full" variant="ghost">
                   Buy
                 </Button>
               </Link>
-              <Link href={"/sell"}>
+              <Link to={"/sell"}>
                 <Button w="full" variant="ghost">
                   Sell
                 </Button>
