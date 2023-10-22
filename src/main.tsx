@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { SafeThemeProvider } from "@safe-global/safe-react-components";
+import Providers from "./components/Providers/Providers";
 import "./index.css";
 
 const colors = {
@@ -27,8 +29,10 @@ const theme = extendTheme({ colors, config });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <App />
-    </ChakraProvider>
+    <Providers>
+      <ChakraProvider theme={theme}>
+        <App />
+      </ChakraProvider>
+    </Providers>
   </React.StrictMode>
 );
