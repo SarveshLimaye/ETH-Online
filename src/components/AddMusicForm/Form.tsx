@@ -182,7 +182,8 @@ const Form = () => {
       ipfsUrl2,
       "https://ipfs.io/ipfs/QmQQEqK951KXLfJjVjZZAJJEQvioMh2w9uevoHHEqE4mpm"
     );
-    await tx.wait();
+
+    await signer.sendTransaction(tx);
 
     toast({
       title: "Song Uploaded.",
