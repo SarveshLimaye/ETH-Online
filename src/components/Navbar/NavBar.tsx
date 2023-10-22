@@ -4,18 +4,36 @@ import {
   HStack,
   IconButton,
   Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
   useDisclosure,
   useColorModeValue,
   useColorMode,
   Link,
   Stack,
 } from "@chakra-ui/react";
-
+import { CgProfile } from "react-icons/cg";
+import Avatar from "avataaars";
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { useAccountAbstraction } from "../../store/accountAbstractionContext";
+import { generateRandomAvatarOptions } from "../../utils/avatar";
 
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const {
+    loginWeb3Auth,
+    logoutWeb3Auth,
+    ownerAddress,
+    safes,
+    isAuthenticated,
+  } = useAccountAbstraction();
+
+  console.log(safes);
 
   return (
     <>
@@ -66,6 +84,45 @@ export default function Navbar() {
                   Add Music
                 </Button>
               </Link>
+              {isAuthenticated ? (
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={"full"}
+                    variant={"link"}
+                    cursor={"pointer"}
+                    minW={0}
+                  >
+                    <Avatar
+                      size={"sm"}
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                      }}
+                      avatarStyle="Circle"
+                      {...generateRandomAvatarOptions()}
+                    />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>
+                      Welcome,{" "}
+                      {ownerAddress.slice(0, 4) +
+                        "..." +
+                        ownerAddress.slice(-4)}
+                    </MenuItem>
+                    <MenuDivider />
+                    <MenuItem as={Link} to="/profile">
+                      Profile
+                    </MenuItem>
+                    <MenuDivider />
+                    <MenuItem onClick={logoutWeb3Auth}>Sign Out</MenuItem>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <Button variant="contained" onClick={loginWeb3Auth}>
+                  Connect
+                </Button>
+              )}
               <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
