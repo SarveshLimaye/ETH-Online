@@ -1,5 +1,6 @@
 import React from "react";
+import UserForm from "../../components/UserRegistrationForm/UserForm";
 
 export default function UserRegistration() {
-  return <div>User-Registration</div>;
+  return <UserForm />;
 }
