@@ -31,10 +31,12 @@ import {
   ring,
 } from "@chakra-ui/react";
 
+import { useAccountAbstraction } from "../../store/accountAbstractionContext";
+
 import recordsideabi from "../../utils/contractsabi/recordsideabi.json";
 
 import { useToast } from "@chakra-ui/react";
-
+import { EthersAdapter } from "@safe-global/protocol-kit";
 const Form = () => {
   const [recordName, setRecordName] = useState("");
   const [recordDescription, setRecordDescription] = useState("");
@@ -45,6 +47,17 @@ const Form = () => {
   const [displayBanner, setDisplayBanner] = useState();
   const [ipfsUrl, setIpfsUrl] = useState("");
   const [ipfsUrl2, setIpfsUrl2] = useState("");
+  const [ipfsJson, setIpfsJson] = useState("");
+
+  const {
+    loginWeb3Auth,
+    logoutWeb3Auth,
+    ownerAddress,
+    safeSelected,
+    safeBalance,
+    isAuthenticated,
+    web3Provider,
+  } = useAccountAbstraction();
 
   const changeHandler = () => {
     setDisplayFile(inputRef.current?.files[0]);
@@ -53,7 +66,7 @@ const Form = () => {
   const uploadAudio2IPFS = async () => {
     const form = new FormData();
     form.append("file", displayFile ? displayFile : "");
-    form.append("file", displayBanner ? displayBanner : "");
+    //  form.append("file", displayBanner ? displayBanner : "");
 
     const options = {
       method: "POST",
@@ -135,16 +148,27 @@ const Form = () => {
   };
 
   const handleSubmit = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.Web3Provider(web3Provider.provider);
+
+    console.log(web3Provider);
     const signer = provider.getSigner();
+    console.log(signer);
+    // const ethAdapter = new EthersAdapter({
+    //   ethers,
+    //   signerOrProvider: signer || web3Provider,
+    // });
+
+    // const safeSDK = await Safe.create({
+    //   ethAdapter,
+    //   safeAddress,
+    // });
     const contract = new ethers.Contract(
-      0x57453f282818272faa71cfb6ca3e685a38cec6c4,
+      "0x57453f282818272faa71cfb6ca3e685a38cec6c4",
       recordsideabi,
       signer
     );
-    const accounts = await provider.listAccounts();
+    //  const accounts = await provider.listAccounts();
 
-    // create json object
     const json = {
       name: recordName,
       description: recordDescription,
@@ -156,9 +180,10 @@ const Form = () => {
       recordDescription,
       ipfsUrl,
       ipfsUrl2,
-      json
+      "https://ipfs.io/ipfs/QmQQEqK951KXLfJjVjZZAJJEQvioMh2w9uevoHHEqE4mpm"
     );
     await tx.wait();
+
     toast({
       title: "Song Uploaded.",
       description: "Please wait for the transaction to be confirmed",
